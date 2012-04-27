@@ -1,0 +1,25 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		rmspaces -- убирает пробелы в именах файлов
+#
+# Создан 20-го Сентябрь 2004 года в 20:57
+#
+list=/tmp/rmspaces.$$
+ls -1 > $list
+
+while read file
+do
+    new=`echo "$file" | sed "s/\ /_/g"`
+    if [ "$new" != "$file" ]; then
+	mv "$file" "$new"
+	echo "$file  RENAMED INTO   $new"
+    fi
+    if [ "$1" = "-r" -a -d "$new" ]; then
+        cd "$new"
+	echo -e "\t\tDiving into $PWD"
+        rmspaces -r
+        cd ../
+    fi
+done < $list
+rm $list

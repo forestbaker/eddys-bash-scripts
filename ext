@@ -1,0 +1,18 @@
+#!/bin/sh
+# this script wrote by Eddy 
+#
+#		ext - returns file extension
+#
+# Создан17-го Июля 2003 года в 19:36
+#
+File="$*"
+if [ -d "$File" ]; then
+    echo ""
+    exit 0
+fi
+EXT=`echo $File|sed 's/.\{1,\}\.//g'`
+if [ "$EXT" = "$File" ]; then
+    EXT=""
+fi
+#echo $EXT|sed "y/QWERTYUIOPASDFGHJKLZXCVBNM/qwertyuiopasdfghjklzxcvbnm/"
+echo $EXT| tr '[:upper:]' '[:lower:]'

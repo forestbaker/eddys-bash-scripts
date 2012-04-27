@@ -1,0 +1,9 @@
+#!/bin/sh
+# this script wrote by Eddy 
+#
+#		cdumount
+#
+# Создан17-го Июля 2003 года в 20:22
+#
+#umount /dev/cdrom
+[ "$1" = "" ] && eject /dev/cdrom || eject $1

@@ -1,0 +1,1 @@
+su root -c "chown root $1; chmod +w $1; chmod u+s $1"

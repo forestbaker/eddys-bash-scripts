@@ -1,0 +1,77 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		txt2html - translates text file into html
+#
+# Создан 20-го Июля 2003 года в 19:21
+#
+#fl=/tmp/t2h.$$
+E=".html"				# extension
+#NL=`echo -e "\015\012"`		# New Line symbol
+R=`echo -e "\r"`			# Carriage Return symbol
+A="&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp "	# Abzatz
+N=0					# <br> tags flag (if 1, then <br>, if 2, then <p>)
+NN=0					# <H> tags flag (if 1, then close <H>)
+DEL=0					# Remove source flag
+T=""; Tcl=""				# By default headers are not striked
+P="</p><p align="justify">"		# by default paragraphs are not separated by line
+
+mecho ()
+{
+    echo -e "$*" >> $name$E
+}
+
+if [ "$#" = "0" ]; then
+    echo -e "\n\t\tUSAGE:\n\ntxt2html <-d:deletes source> <-n:strikes headers>\n\t<-l:draw lines> text_file<s>\n"
+    exit 0
+fi
+if [ "$1" = "-d" ]; then  # remove original
+    DEL=1
+    shift
+fi
+if [ "$1" = "-n" ]; then # Strike titles
+    T="<H2 align=center>"; Tcl="</H2>"
+    shift
+fi
+if [ "$1" = "-l" ]; then # Draw horizontal rulers
+    P="<hr>"
+    shift
+fi
+
+for file in $*
+do
+    EXT=`ext $file`
+    name=`echo $file|sed "s/\.$EXT//"`
+    echo -e "<html>\n<title>$name</title>\n<body>\n">$name$E
+#    cat "$file">$fl
+    for w in `cat $file`
+    do
+#	[ "$w" = "\012" ] && mecho "EEE"# continue
+	if [ "$w" = "$R" ]; then
+	    if [ "$N" = "0" ]; then
+		if [ "$NN" = "1" ]; then
+		    mecho "$Tcl\n$A"
+		else
+		    mecho "<br>\n$A\c"
+		fi
+		N=1
+		NN=0
+	    else
+		if [ "$N" = "1" ]; then
+		    mecho "$P$T"
+		    N=2
+		    NN=1
+		fi
+	    fi
+	else
+	    w=`echo "$w" | sed 's/\ \{2,\}/ /g'`
+	    [ "$w" != "" ] && mecho "$w \c"
+	    N=0
+	fi
+done
+    mecho "\n</body>\n</html>"
+    if [ $DEL = 1 ]; then
+	rm $file
+    fi
+done
+#rm $fl

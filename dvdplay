@@ -1,0 +1,14 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		dvdplay
+#
+# Создан 21-го Март 2005 года в 20:34
+#
+if [ "$1" = "-h" -o "$1" = "--help" ]; then
+    echo "\n\tUsage:\ndvdplay <tracknumber> [<dvddevice>]"
+    exit 0
+fi
+DVDdev=""
+[ "$2" != "" ] && DVDdev="-dvd-device $2"
+mplayer dvd://$1 $DVDdev

@@ -1,0 +1,11 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		rarit -- рарит свои аргументы в архивы
+#			
+# Создан 19-го Февраль 2005 года в 16:57
+#
+for file in $*
+do
+    [ -d "$file" ] && rar a -r $file.rar $file
+done

@@ -1,0 +1,24 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		mp32ogg - encodes mp3 files into ogg with min bitrate 192k
+#
+# Создан 06-го Март 2006 года в 21:58
+#
+WAV=WMA2OGG$$.wav
+OGG=WMA2OGG$$.ogg
+for FILE in $*
+do
+if [ "`ext $FILE`" == "wma" ]; then
+    echo "uncompressing $FILE"
+    NAME=`echo $FILE|sed "s/\.[wW][mM][aA]//"`
+    cp $FILE /dev/shm/$FILE
+    ffmpeg -i /dev/shm/$FILE -ab 192 /dev/shm/$WAV 
+    rm /dev/shm/$FILE
+    echo "Encoding $NAME"
+    oggenc -b 192 /dev/shm/$WAV -o /dev/shm/$OGG >/dev/null
+    rm /dev/shm/$WAV
+    mv /dev/shm/$OGG "$NAME.ogg"
+    [ -e "$NAME.ogg" ] && rm $FILE
+fi
+done

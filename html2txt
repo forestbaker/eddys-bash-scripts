@@ -1,0 +1,15 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		html2txt -- saves html file(s) in txt format
+#
+# Создан 30-го Декабрь 2004 года в 18:14
+#
+
+for File in $*
+do
+    Ext=`ext $File`
+    Name=`echo $File | sed "s/\.$Ext//"`
+    lynx --dump $File > $Name.txt
+    echo "$File proceed"
+done

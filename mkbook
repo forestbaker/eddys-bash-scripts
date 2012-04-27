@@ -1,0 +1,21 @@
+#!/bin/sh
+#
+#	mkbook -- makes pdf book from scanned jpeg images
+#
+echo -e "\\\documentclass[a4paper]{article}\n\\\usepackage{ed}\n" > book.tex
+echo -e "\\\begin{document}\n\\\begin{center}" >> book.tex
+
+cp /Data/scripts/ed.sty ./
+
+for file in `ls *.jpg`
+do
+    name=`echo $file | sed "s/.jpg//"`
+    convert -page A4 $file $name.pdf
+    echo "$file processed"
+    echo -e "\\\includegraphics[height=30cm,width=20cm]{$name.pdf}\\\pagebreak\n" >> book.tex
+done
+echo -e "\\\end{center}\n\\\end{document}" >> book.tex
+pdflatex book.tex
+#latex book.tex
+#dvips book.dvi -o book.ps
+#ps2pdf book.ps

@@ -1,0 +1,8 @@
+#!/bin/sh
+if [ "$#" != 1 ]; then
+    echo -e "Usage:\nDVDbackup <Folder 4 backing up>"
+    exit 1
+fi
+name=`echo $1| sed -e "s/^\///" -e "s/\//_/g"`
+bufs=`mkisofs -R -q -print-size $1`
+mkisofs -V $name -A "Backup information: only 4 my PC" -R  $1 | cdrecord -v -dao -eject tsize="$bufs"s -

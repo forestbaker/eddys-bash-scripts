@@ -1,0 +1,9 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		sure
+#
+# Создан 21-го Октябрь 2005 года в 23:09
+#
+#xmessage -buttons yes,no -default no -nearmouse -print "Are you sure? Really-really?"
+kdialog --yesno "Are you sure? Really-really?"

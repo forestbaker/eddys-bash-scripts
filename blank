@@ -1,0 +1,13 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		blank
+#
+# Создан 12-го Ноябрь 2004 года в 19:35
+#
+#unalias cdrecord
+Dev=""
+[ "$1" = "cd" ] && Dev="dev=combo"    
+cdrecord $Dev --blank=fast
+#alias cdrecord="cdrecord -v -eject"
+#export blank

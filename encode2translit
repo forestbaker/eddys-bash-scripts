@@ -1,0 +1,25 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		encode2translit --- ÐÅÒÅËÏÄÉÒÕÅÔ ÓÏÄÅÒÖÉÍÏÅ ÆÁÊÌÏ× × ÔÒÁÎÓÌÉÔ
+#
+# óÏÚÄÁÎ 22-ÇÏ íÁÊ 2006 ÇÏÄÁ ×  9:24
+#
+cat $1|sed -e \
+    "y/ÊÕËÅÎÇÚÈßÆÙ×ÁÐÒÏÌÄÜÓÍÉÔØÂêõëåîçúèÿæù÷áðòïìäüóíéôøâ/jukengzh'fyvaproldesmit'bJUKENGZH'FYVAPROLDESMIT'B/"\
+    -e "s/Ã/tz/g"	\
+    -e "s/Û/sh/g"	\
+    -e "s/Ý/sch/g"	\
+    -e "s/Ö/zh/g"	\
+    -e "s/Þ/ch/g"	\
+    -e "s/À/yu/g"	\
+    -e "s/Ñ/ya/g"	\
+    -e "s/£/yo/g"	\
+    -e "s/³/YO/g"	\
+    -e "s/ã/TZ/g"	\
+    -e "s/û/SH/g"	\
+    -e "s/ý/SCH/g"	\
+    -e "s/ö/ZH/g"	\
+    -e "s/þ/CH/g"	\
+    -e "s/à/YU/g"	\
+    -e "s/ñ/YA/g" > $1.enc

@@ -1,0 +1,9 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		headphones
+#
+# Создан 21-го Октябрь 2005 года в 22:20
+#
+killall artsd
+artsd -D /dev/dsp1 -F 17 -S 4096 -a toss -d -l 3 -V 1&

@@ -1,0 +1,10 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		headphones
+#
+# Создан 21-го Октябрь 2005 года в 22:20
+#
+killall artsd
+artsd  -F 17 -S 4096 -a toss -d -m artsmessage -c drkonki -l 3 -f -V 1 &
+# -D hw:0,0

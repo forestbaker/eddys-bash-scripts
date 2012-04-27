@@ -1,0 +1,31 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		newtex
+#
+# Создан 03-го Декабрь 2004 года в 13:47
+#
+
+mkfile()
+{
+    if [ -e $1 ]; then
+	echo "File Exists!"
+	exit 1
+    fi
+    echo "\documentclass[a4paper,12pt]{extarticle}" > $1
+    echo "\usepackage{/home/eddy/ed}" >> $1
+    echo "\begin{document}" >> $1
+    echo "\end{document}" >> $1
+}    
+
+
+if [ "$*" = "" ] ;then
+    mkfile newfile.tex
+else
+    for file in $*
+    do
+	e=`ext $file`
+	[ "$e" != "tex" ] && file=$file.tex
+	mkfile $file
+    done
+fi

@@ -1,0 +1,2 @@
+#!/bin/sh
+/usr/bin/qemu -boot c -m 256 -hda /home/eddy/md.img -smb /home/eddy/Docs

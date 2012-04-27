@@ -1,0 +1,12 @@
+#!/bin/sh
+if [ "$#" != 1 ]; then
+    echo -e "Usage:\nbkp <What-to-record>"
+    exit 1
+fi
+blank
+bufs=`mkisofs -r -q -print-size $1`
+mkisofs -r  $1 | cdrecord -v -dao tsize="$bufs"s -
+echo "Written size:"
+du $1
+dd if=/dev/dvdwriter of=/dev/null bs=1024
+eject /dev/dvdwriter

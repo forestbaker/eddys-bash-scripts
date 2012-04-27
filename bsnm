@@ -1,0 +1,9 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		bsnm
+#
+# Создан 20-го Февраль 2007 года в  0:00
+#
+EXT=`ext $1`
+echo $1|sed "s/\.$EXT//"

@@ -1,0 +1,39 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		convname -- substitutes spaces by underlines
+#			in given filenames (Warning! this perfectly
+#			works with files with extensions, but not
+#			with folders).
+#			If renames file, it substitutes also all its old
+#			filenames inside it.
+#
+# Создан 13-го Март 2004 года в 13:40
+#
+
+[ "$*" = "" ] && echo  "		convname <file> -- substitutes spaces by underlines
+in given filenames (Warning! this perfectly
+works with files with extensions, but not
+with folders).
+If renames file, it substitutes also all its old
+filenames inside it."
+
+#line=`echo $* | sed -e "s/:/<c>/g" -e "s/\.[^\ ]*/&:/g" -e "s/:\ /:/g"`
+file=$*
+#OLDIFS=$IFS
+#IFS=:
+
+#for file in $line
+#do
+   fl1=`echo "$file" | sed "s/<c>/:/g"`
+    name=`echo "$fl1" | sed "s/\ /_/g"`
+    if [ -f "$fl1" ]; then
+	nm=`echo "$fl1" | sed "s/\.[^\.]*$//"`
+	sed "s/$fl1/$nm/g" "$fl1" > tmp
+	rm "$fl1"
+	fl1="tmp"
+    fi
+    mv "$fl1" "$name"    
+    echo "$name  *** Done"
+#done
+#IFS=$OLDIFS

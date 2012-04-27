@@ -1,0 +1,12 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		file2lower
+#
+# Создан 06-го Февраль 2007 года в  0:28
+#
+for file in $*
+    do
+	name=`tolower $file`
+	mv $file $name
+    done

@@ -1,0 +1,20 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		mp32ogg - encodes mp3 files into ogg with min bitrate 192k
+#
+# Создан 06-го Март 2006 года в 21:58
+#
+
+for FILE in $*
+do
+if [ -d "$FILE" ]; then
+    echo -e "\n\nOpen folder:\t\t******** $FILE ********\n"
+    cd $FILE
+    mp32ogg-r `ls -1`
+    cd ../
+else
+    EXT=`ext $FILE`
+    [ "$EXT" == "mp3" ] && mp32ogg "$FILE"
+fi
+done

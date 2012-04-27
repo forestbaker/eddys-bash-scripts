@@ -1,0 +1,73 @@
+#!/bin/sh
+# this script wrote by Eddy 
+#
+#		batchrename - renames files like 01.ext, 02.ext ...
+#
+# Создан 17-го Июля 2003 года в 20:35
+#   
+#   format :  batchrename <list of files>
+#        or:              -r <extension> <<list of files> or <dir>>
+#   -r - recoursively
+counter=0
+extrec=""
+if [ "$#" -lt "1" ]; then
+    echo -e "\n\t\tUsage:\n\tbatchrename [opt]\nopt:"
+    echo -e "-r <ext> <folder> (or file list) -- renames recoursively ALL files"
+    echo -e "\tin folder <folder> (or by file list given)  with extension .<ext>"
+    echo -e "<folder> -- renames ALL files in folder given"
+    echo -e "<file list> -- renames ALL files of given filelist.\n\n"
+    exit 0
+fi
+Name="$*"
+if [ "$1" = "-r" ]; then
+    extrec="$2"
+    shift
+    shift
+    Name="$*"
+    [ "$Name" = "" ] && Name="./"
+#    if [ -d "$Name" ]; then
+#	cd "$Name"
+#	Name=`ls -1 | sed "s/\ /<>/g"`
+#    fi
+fi
+echo -e "\n\t\t\tRENAMING"
+
+del_dup
+
+for file in $Name
+do
+file=`echo "$file" | sed "s/<>/ /g"`
+    if [ -d "$file" ];then
+	echo -e "\nDiving into \033[38m $file \033[39m"
+	cd "$file"
+	if [ "$extrec" != "" ]; then
+	    batchrename -r $extrec `ls -1 | sed "s/\ /<>/g"`
+	else
+	    batchrename `ls -1 | sed "s/\ /<>/g"`	
+	fi
+	cd ../
+	continue
+    fi
+    ext=`ext "$file"`
+    if [ "$ext" = "ion" ]; then
+	continue
+    fi
+    if [ "$extrec" = "" -o "$ext" = "$extrec" ];then
+        counter=`expr $counter + 1`
+	echo -e "Progress: $counter files\r\c"
+        mv "$file" "rnmd$counter.$ext"
+    fi
+done
+echo -e "\n\n\t\t\tENDING"
+digits=`echo $counter|awk '{print length ($0)}'`
+cnt=1
+while [ $digits -gt $cnt ]
+do
+    f=`ls -S -1|grep "rnmd[0-9]\{$cnt\}\."`
+    rename rnmd rnmd0 $f
+    cnt=`expr $cnt + 1`
+done
+if [ "$counter" -gt "0" ]; then
+    rename rnmd "" rnmd*
+fi
+echo -e "\n\t\t\tDone !!!\n"

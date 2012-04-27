@@ -1,0 +1,42 @@
+#!/bin/sh
+# this script wrote by Eddy 
+#
+#		mymod - 664 for files & 775 for dirs
+#
+# Создан17-го Июля 2003 года в 20:26
+#
+dirs="/tmp/mymod.dirs.$$"
+files="/tmp/mymod.files.$$"
+    fl="$*"
+    if [ ! -d "$fl" ]; then
+	chmod 664 "$fl"
+	chown eddy "$fl"
+	exit
+    fi
+dive "$fl" > $dirs
+dive -f "$fl" > $files
+    while read d
+    do
+        chmod 775 "$d"
+	chown eddy "$d"
+	echo "$d"
+    done<$dirs	
+    while read f
+    do
+        chmod 664 "$f"
+	chown eddy "$f"
+    done<$files	
+rm $dirs
+rm $files
+#    chmod 777 "$fl"
+#    chown  eddy:admin "$fl"
+#    echo "Diving into $fl"
+#    cd "$fl"
+#
+#    for f in `ls -1|sed "s/\ /<>/g"`
+#    do
+#	f=`echo "$f" | sed "s/<>/ /g"`
+#	mymod "$f"
+#    done
+#    cd ../
+

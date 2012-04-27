@@ -1,0 +1,57 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		mp32ogg - encodes mp3 files into ogg with min bitrate 192k
+#
+# Создан 06-го Март 2006 года в 21:58
+#
+#if [ -e /dev/shm/MPEG.wav -o -e /dev/shm/1.ogg ]; then
+#    echo "Another process is alredy running"
+#    exit
+#else
+WAV=MP32OGG$$.wav
+OGG=MP32OGG$$.ogg
+for FILE in $*
+do
+if [ "`ext $FILE`" == "mp3" ]; then
+echo "uncompressing $FILE"
+NAME=`echo $FILE|sed "s/\.[mM][pP]3//"`
+cp $FILE /dev/shm/$FILE
+mpg321 /dev/shm/$FILE -w /dev/shm/$WAV > tmp 2>&1
+rm /dev/shm/$FILE
+unix2dos tmp >/dev/null 2>&1
+encode CP1251 tmp 2>&1 #recode
+Title=`cat tmp|sed -n '/Title/p'|sed "s/\(Title *: *\)\(.*\)\( *Artist.*\)/\2/"|sed "s/  */ /g"`
+[ "$Title" = "" ] && Title=$NAME
+Artist=`cat tmp|sed -n '/Title/p'|sed "s/\(.*Artist *: *\)\(.*\)\( *\)/\2/"|sed "s/  */ /g"`
+if [ "$Artist" = "" ]; then
+    AR=`cd ../;pwd`
+    Artist=`basename $AR`
+fi
+Album=`cat tmp|sed -n '/Album/p'|sed "s/\(Album *: *\)\(.*\)\( *Year.*\)/\2/"|sed "s/  */ /g"`
+if [ "$Album" = "" ]; then
+    AL=`pwd`
+    Album=`basename $AL`
+fi
+Year=`cat tmp|sed -n '/Album/p'|sed "s/\(.*Year *: *\)\(.*\)/\2/"|sed "s/ *//g"`
+Genre=`cat tmp|sed -n '/Comment/p'|sed "s/\(.*Genre *: *\)\(.*\)/\2/"|sed "s/  */ /g"`
+#Brate=`cat tmp|grep "kbit"|sed "s/\(MPEG 1.0 layer III, \)\(.*\)\( kbit.*\)/\2/"`
+Brate=`cat tmp|grep "kbit"|sed -e "s/\(.*\)\([0-9]\{3\} kbit\)\(.*\)/\2/" -e "s/\([0-9]\{3\}\)\(.*\)/\1/"`
+NUM=`strings $FILE|head -n 6|grep "TCON"|sed "s/TCON.*//g"`
+Num=""
+if [ "$NUM" == "" -o "$NUM" == "v" ]; then
+    NUM=`strings $FILE|head -n 12|grep "/"|sed "s/\(.*\)\(\/.*\)/\1/"`
+fi
+if [ "$NUM" != "" -a $NUM -gt 0 ] >/dev/null 2>&1; then
+    Num="-N $NUM"
+fi
+echo "Encoding $NAME"
+echo "Bitrate:$Brate Num:$NUM Genre:$Genre Title:$Title Alb:$Album Y:$Year Arti:$Artist " 
+oggenc -b "$Brate" /dev/shm/$WAV $Num -G "$Genre" -t "$Title" -l "$Album" -d "$Year" -a "$Artist" -o /dev/shm/$OGG >/dev/null
+rm /dev/shm/$WAV
+mv /dev/shm/$OGG "$NAME.ogg"
+rm tmp
+[ -e "$NAME.ogg" ] && rm $FILE
+fi
+done
+#fi

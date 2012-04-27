@@ -1,0 +1,15 @@
+#!/bin/sh
+Dir="/Data/documents/Всякая_всячина"
+if [ "$#" -lt 1 ]; then
+    echo -e "Usage:\navirecord <What-to-record> [<Russian translation>]"
+    exit 1
+fi
+Ext=`ext $1`
+Name=`echo $1 | sed "s/\.$Ext//"`
+bufs=`mkisofs -rJ -q -print-size $1`
+#echo "Name=$Name, \$1=$1, Ext=$Ext"
+mkisofs -A $Name -rJ $1 | cdrecord -v -eject tsize="$bufs"s -
+shift
+Name=`echo $Name | sed "s/_/\ /g"`
+echo -e "$Name\t\t$*" >> $Dir/Cinema.txt
+echo -e "%& $Name\t&\t$*\\\\\\\\" >> $Dir/Cinema.tex

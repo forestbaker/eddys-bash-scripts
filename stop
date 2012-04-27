@@ -1,0 +1,8 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		stop -- stops player
+#
+# Создан 01-го Ноябрь 2004 года в 20:26
+#
+killall mpg321

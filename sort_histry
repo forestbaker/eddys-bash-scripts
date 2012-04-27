@@ -1,0 +1,3 @@
+#!/bin/sh
+cat ~/.bash_history |awk '{print $1}'|sed "s/^\.\/..*//" |sort -u > /tmp/1
+mv /tmp/1 ~/.bash_history

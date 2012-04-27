@@ -1,0 +1,8 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		tolower -- преобразует аргумент(ы) в нижний регистр
+#
+# Создан 12-го Март 2006 года в  0:04
+#
+echo "$*"|tr '[:upper:]' '[:lower:]'

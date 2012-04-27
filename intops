@@ -1,0 +1,6 @@
+#!/bin/sh
+for file in $*
+do
+    convert -page A4 $file $file.ps
+    echo $file processed!
+done

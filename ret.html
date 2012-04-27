@@ -1,0 +1,4 @@
+#!/bin/sh
+cat $1 | sed "s/<.*\/[bB][oO][dD][yY].*>//" | sed "s/<.*\/[hH][tT][mM][lL].*>//" |sed "s/^$//" > tmp
+cat tmp ~/bin/back > $1
+rm tmp

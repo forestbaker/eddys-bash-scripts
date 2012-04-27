@@ -1,0 +1,46 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#                Makes similar felis/folder tree from simlinks
+#
+# Создан 8 июня 2003 года в 19:01
+#
+lst=/tmp/mklntree.$$
+
+if [ "$1" = "-o" ]; then
+    one="y"
+    shift
+fi
+inp=$1
+outp=$2
+if [ "$outp" = "" ]; then
+    echo "usage: mklntree <input-dir> <output-dir>"
+    exit 1
+fi
+[ ! -e "$outp" ] && mkdir $outp
+if [ ! -e "$outp" ]; then
+    echo "Can't create folder $outp "
+    exit 1
+fi
+
+cd $inp
+ls -1 > "$lst"
+
+while read f
+do
+    if [ -d "$PWD/$f" -a "$PWD/$f" != "$outp" -a ! -h "$PWD/$f" ]; then
+	if [ "$one" = "y" ]; then
+	    mklntree -o $f $outp
+	else
+	    mklntree $f $outp/$f
+	fi
+    else 
+	if [ ! -e "$outp/$f" ]; then
+	    [ "$PWD/$f" != "$outp" -a ! -h "$PWD/$f" ] && ln -s $PWD/$f $outp
+	else
+	    [ "$PWD/$f" != "$outp" -a ! -h "$PWD/$f" ] && ln -s $PWD/$f $outp/$$_$f
+	fi
+    fi
+done<$lst
+
+rm $lst

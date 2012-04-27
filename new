@@ -1,0 +1,13 @@
+#!/bin/sh
+# this script makes new script template and allows to edit it
+
+Name=$1
+cd /home/eddy/bin
+cat template>$Name
+echo -e "#		$Name\n#">>$Name
+echo -e "# Создан \c">>$Name
+date +%d-го\ %B\ %Y\ года\ в\ %k:%M>>$Name
+echo "#">>$Name
+chmod 775 $Name
+mcedit $Name
+

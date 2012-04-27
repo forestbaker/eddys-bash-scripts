@@ -1,0 +1,70 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		fardescr2mine - translates Far descriptions into mine
+#
+# Создан 23-го Сентября 2003 года в 17:21
+#
+
+if [ "$1" = "-r" ]; then
+    list=/tmp/fard.$$
+    dive "$2">$list
+    while read file
+    do
+	fardescr2mine "$file" 2>/dev/null
+    done<$list	
+    rm $list 2>/dev/null
+    exit 0
+fi
+if [ "$1" = "-recode" ]; then
+    list=/tmp/fard.$$
+    des="descript.ion"
+    [ "$2" != "" ] && des="$2"
+    dive "$PWD">$list
+    while read file
+    do
+	recode CP-866 "$file/$des" 2>/dev/null
+	echo "$file"
+    done<$list	
+    rm $list 2>/dev/null
+    exit 0
+fi    
+if [ "$1" = "-f" ]; then
+    while read file
+    do
+	fardescr2mine "$file" 2>/dev/null
+#echo "$file"
+    done<$2
+    exit 0
+else
+    dest="$1"
+    tmp=/tmp/fard.$$
+    if [ ! -d "$dest" -a "$dest" != "" ]; then
+        Descr="$dest"
+	Dir=`echo "$dest"|sed "s/Descript\.ion//"|sed "s/descript\.ion//"|sed "s/\/$//"`
+        [ "$Dir" = "" ] && Dir="."
+	newdescr="$Dir/descript.ion"
+    else
+        [ -d "$dest" ] && Dir=`echo "$dest"|sed "s/\/$//"`
+        [ "$dest" = "" ] && Dir="."
+        Descr="$Dir/descript.ion"
+        [ -a "$Dir/Descript.ion" ] && Descr="$Dir/Descript.ion"
+        newdescr="$Dir/descript.ion"
+    fi
+    
+    while read f
+    do	
+    F=`echo "$f"|awk '{print $1}'`
+	f=`echo "$f"|sed "s/\ \{2,\}/ /g"`
+        if [ -a "$Dir/$F" ]; then
+		f=`echo "$f"|sed "s/\ \{1,\}/:/"`
+        else
+	    f=`echo "$f"|grep "^\""|sed "s/\"//"|sed "s/:/ /g"|sed "s/\"\ \{0,\}/:/"`
+        fi
+	echo "$f" >> $tmp
+    done<"$Descr"
+    cp $tmp "$newdescr" 2>/dev/null
+    echo "$newdescr"
+    recode CP-866 "$newdescr"
+    rm $tmp 2>/dev/null
+fi

@@ -1,0 +1,20 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		convutf - конвертирует имена файлов из долбанного юникода в кошерную кои8
+#
+# Создан 05-го Март 2007 года в 13:40
+#
+if [ "$1" != "" ]
+then
+	convmv -f UTF-8 -t koi8-r -i --notest -r "$1"
+	exit
+fi
+convname-r
+for file in `ls -1`
+do
+convmv -f UTF-8 -t koi8-r -i --notest -r "$file"
+done
+#echo "Right [Y/N]"?
+#read a
+#[ "$a" = "Y" -o "$a" = "y" ] && convmv -f UTF-8 -t koi8-r --notest -r $1

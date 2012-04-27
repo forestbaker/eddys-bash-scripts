@@ -1,0 +1,78 @@
+#!/bin/sh
+
+BASE=`basename $1`
+IDX=$BASE.idx
+IND=$BASE.ind
+#ILG=$BASE.ilg
+sed "s/ //g" $IDX > tmp
+sed -e "s/\\\IeC {\\\cyryu }/þ/g" \
+-e "s/\\\IeC {\\\cyra }/à/g" \
+-e "s/\\\IeC {\\\cyrb }/á/g" \
+-e "s/\\\IeC {\\\cyrc }/ö/g" \
+-e "s/\\\IeC {\\\cyrd }/ä/g" \
+-e "s/\\\IeC {\\\cyre }/å/g" \
+-e "s/\\\IeC {\\\cyrf }/ô/g" \
+-e "s/\\\IeC {\\\cyrg }/ã/g" \
+-e "s/\\\IeC {\\\cyrh }/õ/g" \
+-e "s/\\\IeC {\\\cyri }/è/g" \
+-e "s/\\\IeC {\\\cyrishrt }/é/g" \
+-e "s/\\\IeC {\\\cyrk }/ê/g" \
+-e "s/\\\IeC {\\\cyrl }/ë/g" \
+-e "s/\\\IeC {\\\cyrm }/ì/g" \
+-e "s/\\\IeC {\\\cyrn }/í/g" \
+-e "s/\\\IeC {\\\cyro }/î/g" \
+-e "s/\\\IeC {\\\cyrp }/ï/g" \
+-e "s/\\\IeC {\\\cyrya }/ÿ/g" \
+-e "s/\\\IeC {\\\cyrr }/ð/g" \
+-e "s/\\\IeC {\\\cyrs }/ñ/g" \
+-e "s/\\\IeC {\\\cyrt }/ò/g" \
+-e "s/\\\IeC {\\\cyru }/ó/g" \
+-e "s/\\\IeC {\\\cyrzh }/æ/g" \
+-e "s/\\\IeC {\\\cyrv }/â/g" \
+-e "s/\\\IeC {\\\cyrsftsn }/ú/g" \
+-e "s/\\\IeC {\\\cyrery }/û/g" \
+-e "s/\\\IeC {\\\cyrz }/ç/g" \
+-e "s/\\\IeC {\\\cyrsh }/ø/g" \
+-e "s/\\\IeC {\\\cyrerev }/ý/g" \
+-e "s/\\\IeC {\\\cyrshch }/ù/g" \
+-e "s/\\\IeC {\\\cyrch }/÷/g" \
+-e "s/\\\IeC {\\\cyrhrdsn }/ü/g" \
+-e "s/\\\IeC {\\\CYRYU }/Þ/g" \
+-e "s/\\\IeC {\\\CYRA }/À/g" \
+-e "s/\\\IeC {\\\CYRB }/Á/g" \
+-e "s/\\\IeC {\\\CYRC }/Ö/g" \
+-e "s/\\\IeC {\\\CYRD }/Ä/g" \
+-e "s/\\\IeC {\\\CYRE }/Å/g" \
+-e "s/\\\IeC {\\\CYRF }/Ô/g" \
+-e "s/\\\IeC {\\\CYRG }/Ã/g" \
+-e "s/\\\IeC {\\\CYRH }/Õ/g" \
+-e "s/\\\IeC {\\\CYRI }/È/g" \
+-e "s/\\\IeC {\\\CYRISHRT }/É/g" \
+-e "s/\\\IeC {\\\CYRK }/Ê/g" \
+-e "s/\\\IeC {\\\CYRL }/Ë/g" \
+-e "s/\\\IeC {\\\CYRM }/Ì/g" \
+-e "s/\\\IeC {\\\CYRN }/Í/g" \
+-e "s/\\\IeC {\\\CYRO }/Î/g" \
+-e "s/\\\IeC {\\\CYRP }/Ï/g" \
+-e "s/\\\IeC {\\\CYRYA }/ß/g" \
+-e "s/\\\IeC {\\\CYRR }/Ð/g" \
+-e "s/\\\IeC {\\\CYRS }/Ñ/g" \
+-e "s/\\\IeC {\\\CYRT }/Ò/g" \
+-e "s/\\\IeC {\\\CYRU }/Ó/g" \
+-e "s/\\\IeC {\\\CYRZH }/Æ/g" \
+-e "s/\\\IeC {\\\CYRV }/Â/g" \
+-e "s/\\\IeC {\\\CYRSFTSN }/Ú/g" \
+-e "s/\\\IeC {\\\CYRERY }/Û/g" \
+-e "s/\\\IeC {\\\CYRZ }/Ç/g" \
+-e "s/\\\IeC {\\\CYRSH }/Ø/g" \
+-e "s/\\\IeC {\\\CYREREV }/Ý/g" \
+-e "s/\\\IeC {\\\CYRSHCH }/Ù/g" \
+-e "s/\\\IeC {\\\CYRCH }/×/g" \
+-e "s/\\\IeC {\\\CYRHRDSN }/Ü/g" \
+-e "s/item/item /g" $IDX > tmp
+mv tmp $IDX
+makeindex -L $IDX
+#| makeindex -t $ILG | 
+cat $IND| tr 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ' \\\
+'áâ÷çäåöúéêëìíîïðòóôõæèãþûýøùÿüàñÁÂ×ÇÄÅÖÚÉÊËÌÍÎÏÐÒÓÔÕÆÈÃÞÛÝØÙßÜÀÑ' > tmp
+mv tmp $IND

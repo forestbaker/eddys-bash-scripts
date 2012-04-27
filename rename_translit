@@ -1,0 +1,42 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		rename_translit --- ÐÅÒÅ×ÏÄÉÔ ÒÕÓÓËÉÅ ÉÍÅÎÁ ÆÁÊÌÏ× × ÔÒÁÎÓÌÉÔ
+#
+# óÏÚÄÁÎ 22-ÇÏ íÁÊ 2006 ÇÏÄÁ ×  9:24
+#
+rmspaces
+for Name in `ls -1`
+do
+    Newname=`echo "$Name"|enconv|sed -e \
+    "y/ÊÕËÅÎÇÚÈßÆÙ×ÁÐÒÏÌÄÜÓÍÉÔØÂêõëåîçúèÿæù÷áðòïìäüóíéôøâ/jukengzh'fyvaproldesmit'bJUKENGZH'FYVAPROLDESMIT'B/"\
+    -e "s/Ã/tz/g"	\
+    -e "s/Û/sh/g"	\
+    -e "s/Ý/sch/g"	\
+    -e "s/Ö/zh/g"	\
+    -e "s/Þ/ch/g"	\
+    -e "s/À/yu/g"	\
+    -e "s/Ñ/ya/g"	\
+    -e "s/£/yo/g"	\
+    -e "s/³/YO/g"	\
+    -e "s/ã/TZ/g"	\
+    -e "s/û/SH/g"	\
+    -e "s/ý/SCH/g"	\
+    -e "s/ö/ZH/g"	\
+    -e "s/þ/CH/g"	\
+    -e "s/à/YU/g"	\
+    -e "s/?/_/g"	\
+    -e "s/ñ/YA/g"`
+    if [ "$Name" != "$Newname" ]; then
+        mv "$Name" "$Newname"
+	echo -e "$Name   ->    $Newname                             \r\c"
+    fi
+    if [ -d "$Newname" ]; then
+    cd "$Newname" 2>/dev/null
+	if [ $? == 0 ]; then
+		echo -e "\n\nDiving into $Newname"
+		rename_translit
+		cd ../
+	fi
+    fi
+done

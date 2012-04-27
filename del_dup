@@ -1,0 +1,28 @@
+#!/bin/sh
+#
+#	del_dup -- deletes alike files
+#		WARNING!!! Can deletes different files, if their heads are alike
+#
+name=tmp.$$
+ls -lSa $1 | awk '{print $5,$9}' > $name
+read size1 file1 < $name
+rmv="0"
+while read size file
+do 
+    [ ! -f "$file" ] && continue
+    if [ "$size1" = "$size" ]; then
+	h1=`head $file1`
+	h2=`head $file`
+	if [ "$h1" = "$h2" ]; then
+	    echo "$file1  AND  $file : $size"
+	    rm $file && rmv="1"
+	fi
+    fi
+    size1=$size
+    if [ "$rmv" = "0" ]; then
+	file1=$file
+    else
+	rmv=0
+    fi
+done < $name
+rm $name

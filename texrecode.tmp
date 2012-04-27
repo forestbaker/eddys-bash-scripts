@@ -1,0 +1,77 @@
+#!/bin/sh
+
+#BASE=`basename $1`
+#IDX=$BASE
+#IND=$BASE.ind
+#ILG=$BASE.ilg
+sed "s/ //g" $1 > tmp
+sed '{s/\\\cyryu/À/g
+s/\\\cyra/Á/g
+s/\\\cyrb/Â/g
+s/\\\cyrtz/Ã/g
+s/\\\cyrd/Ä/g
+s/\\\cyre/Å/g
+s/\\\cyrf/Æ/g
+s/\\\cyrg/Ç/g
+s/\\\cyrh/È/g
+s/\\\cyri/É/g
+s/\\\cyrishrt/Ê/g
+s/\\\cyrk/Ë/g
+s/\\\cyrl/Ì/g
+s/\\\cyrm/Í/g
+s/\\\cyrn/Î/g
+s/\\\cyro/Ï/g
+s/\\\cyrp/Ð/g
+s/\\\cyrya/Ñ/g
+s/\\\cyrr/Ò/g
+s/\\\cyrs/Ó/g
+s/\\\cyrt/Ô/g
+s/\\\cyru/Õ/g
+s/\\\cyrzh/Ö/g
+s/\\\cyrv/×/g
+s/\\\cyrsftsn/Ø/g
+s/\\\cyry/Ù/g
+s/\\\cyrz/Ú/g
+s/\\\cyrsh/Û/g
+s/\\\cyrerev/Ü/g
+s/\\\cyrshch/Ý/g
+s/\\\cyrch/Þ/g
+s/\\\cyrhrdsn/ß/g
+s/\\\CYRYU/à/g
+s/\\\CYRA/á/g
+s/\\\CYRB/â/g
+s/\\\CYRTZ/ã/g
+s/\\\CYRD/ä/g
+s/\\\CYRE/å/g
+s/\\\CYRF/æ/g
+s/\\\CYRG/ç/g
+s/\\\CYRH/è/g
+s/\\\CYRI/é/g
+s/\\\CYRISHRT/ê/g
+s/\\\CYRK/ë/g
+s/\\\CYRL/ì/g
+s/\\\CYRM/í/g
+s/\\\CYRN/î/g
+s/\\\CYRO/ï/g
+s/\\\CYRP/ð/g
+s/\\\CYRYA/ñ/g
+s/\\\CYRR/ò/g
+s/\\\CYRS/ó/g
+s/\\\CYRT/ô/g
+s/\\\CYRU/õ/g
+s/\\\CYRZH/ö/g
+s/\\\CYRV/÷/g
+s/\\\CYRSFTSN/ø/g
+s/\\\CYRY/ù/g
+s/\\\CYRZ/ú/g
+s/\\\CYRSH/û/g
+s/\\\CYREREV/ü/g
+s/\\\CYRSHCH/ý/g
+s/\\\CYRCH/þ/g
+s/\\\CYRHRDSN/ÿ/g
+s/item/item /g
+}' tmp > tmp1
+mv tmp1 $1
+rm tmp
+#| makeindex -t $ILG | tr '¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ' \\\
+#  'áÁâÂ÷×çÇäÄåÅ³£öÖúÚéÉêÊëËìÌíÍîÎïÏðÐòÒóÓôÔõÕæÆèÈãÃþÞûÛýÝÿßùÙøØüÜàÀñÑ' > $IND

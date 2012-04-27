@@ -1,0 +1,2 @@
+#!/bin/sh
+import png:$(date +/tmp/%Y.%m.%d_%H:%M:%S.png)

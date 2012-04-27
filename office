@@ -1,0 +1,8 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		office
+#
+# Создан 26-го Июль 2011 года в 17:41
+#
+OOO_FORCE_DESKTOP=gnome /usr/bin/soffice $*

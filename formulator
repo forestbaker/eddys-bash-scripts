@@ -1,0 +1,37 @@
+#!/bin/sh
+prefix="tmp_$$"
+if [ "$1" = "" ]; then
+	echo -e "\nUsage: $(basename $0) \"latex string\" [output filename]\n"
+	exit
+fi
+[ "$2" != "" ] && output="$2" || output=$(date +%y.%m.%d_%H:%M:%S.png)
+tex="$prefix.tex"
+cat > $tex << EOF
+\documentclass[12pt]{article}
+%\usepackage{/home/eddy/ed}
+\usepackage[koi8-r]{inputenc}	% Классическая кодировка
+\usepackage[english,russian]{babel}	% Правила переноса слов
+\usepackage[intlimits]{amsmath}	% Мат. команды
+\usepackage{amsfonts}		% Шрифты
+\usepackage{amssymb}		% Спец. символы
+\usepackage{wasysym}		% Для астрономических символов типа знаков зодиака
+\pagestyle{empty}
+\parindent=0pt
+\setbox0=\hbox{
+EOF
+echo $1 >> $tex
+cat >> $tex << EOF
+}
+\textheight=\ht0
+\textwidth=\wd0
+\oddsidemargin=-1cm
+\topmargin=-1.5cm
+\advance\textheight by 2\dp0
+\advance\textwidth by 2em
+\begin{document}
+\vbox{\vss\hbox{\hss\copy0\hss}\vss}
+\end{document}
+EOF
+latex $tex
+dvipng -D 600 $prefix.dvi -o $output
+rm -f $prefix*

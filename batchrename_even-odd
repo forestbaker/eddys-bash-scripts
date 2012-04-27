@@ -1,0 +1,42 @@
+#!/bin/sh
+# this script wrote by Eddy 
+#
+#		batchrename - renames files like <first>.ext, <first + step>.ext ...
+#				example: batchrename 1 2 *
+#				makes 001.ext 003.ext 005.ext ...
+#
+# Создан 17-го Июля 2003 года в 20:35
+#   
+#   format :  batchrename <first> <step> <list of files>
+#
+first=$1
+shift
+step=$1
+shift
+Name="$*"
+counter=$first
+
+echo -e "\n\t\t\tRENAMING"
+for file in $Name
+do
+    ext=`ext "$file"`
+    if [ "$ext" = "ion" ]; then
+	continue
+    fi
+    echo -e "Progress: $counter files\r\c"
+    mv "$file" "rnmd$counter.$ext"
+    counter=`expr $counter + $step`        
+done
+echo -e "\n\n\t\t\tENDING"
+digits=`echo $counter|awk '{print length ($0)}'`
+cnt=1
+while [ $digits -gt $cnt ]
+do
+    f=`ls -S -1|grep "rnmd[0-9]\{$cnt\}\."`
+    rename rnmd rnmd0 $f
+    cnt=`expr $cnt + 1`
+done
+if [ "$counter" -gt "0" ]; then
+    rename rnmd "" rnmd*
+fi
+echo -e "\n\t\t\tDone !!!\n"

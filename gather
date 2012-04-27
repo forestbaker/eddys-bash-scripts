@@ -1,0 +1,41 @@
+#!/bin/sh
+#
+#	gather -- gathers all jpg pictures from current folder and its subfolders into $1
+#
+#if [ "$2" != "" ]; then
+#    count="$2"
+#else
+#    count=1
+#fi
+tmp=`echo "$1" | grep "^/"`
+if  [ "$tmp" != "" ]; then
+    where="$1"
+else
+    if [ "$1" != "" ]; then
+        where="$PWD/$1"
+    else
+	where="$PWD/GATHER"
+    fi
+fi
+[ ! -e $where ] && mkdir $where
+for file in `ls`
+do
+    [ "$PWD/$file" = "$where" ] && continue
+    if [ -d "$file" ]; then
+	cd $file
+	#count=`
+	echo -e "\n\t\tCurrent dir:\t$file"
+	gather $where #$count`
+	cd ../
+	continue
+    fi
+#    tmp=`echo "$file" | grep ".[jJ][pP][gG]$"`
+#    [ "$tmp" = "" ] && tmp=`echo "$file" | grep ".[gG][iI][fF]$"`
+#    if [ "$tmp" != "" ]; then
+	cp $file $where/$$-$file
+	#count=`expr $count + 1`
+#    fi
+done
+#echo $count
+#cd $where
+#batchrename *.jpg

@@ -1,0 +1,8 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		mkbest
+#
+# Создан 02-го Февраль 2007 года в 21:20
+#
+ln $PWD/$1 /Big/Music/Best

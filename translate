@@ -1,0 +1,18 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		translate
+#
+# Создан 07-го Май 2004 года в 18:30
+#
+[ "$1" != "" ] && cat /Data/Misc/html/Dictionary/en-ru.dic | grep "$1"
+echo -e "\n*****  Enter a word *****\n"
+while true 
+do 
+    read word
+    if [ $word != "" ]; then
+	cat /Data/Misc/html/Dictionary/en-ru.dic | grep "$word"
+	echo -e "\n**************** Enter a word *****************************\n"
+    fi
+done
+    

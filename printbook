@@ -1,0 +1,44 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		printbook
+#
+# Создан 17-го Июнь 2004 года в 22:36
+#
+#    Prints a .ps file into book /32 pages, by pamphlets even-odd(revercive)
+tmp=/tmp/printbook.$$
+tmp1=/tmp/printbook1.$$
+echo "Число страниц (кратно 4):"
+read numb
+book_table -f $numb
+
+while read first
+do
+    if [ "$first" = "" ]; then
+	echo -e "\n\t\t\t\aСлэдущий тетрад"
+	read blin < /dev/tty
+	continue
+    fi
+    psselect -p$first $1 $tmp 2> /dev/null
+    psnup -2 $tmp $tmp1 2> /dev/null
+    lpr $tmp1
+    echo -e "\tПэрЕвэрни пачку, да"
+    read blin < /dev/tty
+    read second
+    psselect -p$second $1 $tmp 2> /dev/null
+    psnup -2 $tmp $tmp1 2>/dev/null
+    lpr $tmp1
+done < table
+echo -e "\n\nСлущий, закончилы наканэц, ДА!!!!"
+read blin < /dev/tty
+rm table
+rm $tmp
+rm $tmp1
+#psbook -s32 $1 $tmp
+#psnup -2 $tmp $tmp1
+#mv $tmp
+#psselect -o -p1-32 $tmp1 $tmp
+#lpr $tmp
+#psselect -e -r -p1-32 $tmp1 $tmp
+#lpr $tmp
+

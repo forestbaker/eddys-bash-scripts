@@ -1,0 +1,16 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		mkcddb -- mounts, makes CD database and umounts CD
+#
+# Создан 31-го Май 2004 года в 22:16
+#
+dbnm="$1"
+CDdev="/dev/cdrom"
+CDdir="/cd"
+if [ "$1" = "dvd" ]; then
+    CDdev="/dev/dvd"
+    CDdir="/cdrw"
+    dbnm="$2"
+fi
+eject -t $CDdev && mount $CDdev && mkdatabase $CDdir $dbnm && eject $CDdev

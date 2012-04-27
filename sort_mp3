@@ -1,0 +1,19 @@
+#!/bin/sh
+
+if [ "$1" = "" ]; then
+    echo -e "\tUsage:\nsort_mp3 <songlist_file>"
+fi
+echo "FIlelist: " > flist
+for file in `cat $1|sed "s/\ /#%#/g"`
+do
+    fname=`echo $file | sed "s/^.*\///" | sed "s/#%#/\ /g"`
+#    dir=`echo $file | awk -F/ '{print $7}' | sed "s/#%#/\ /g"`
+    dir=`echo $file | sed "s/\/[^/]*$//"`
+    dir=`basename $dir`
+    echo "dir: $dir, name: $fname" >> flist
+    if [ ! -d "$dir" ];then
+	mkdir "$dir"
+	echo "Processing $dir"
+    fi
+    [ -e "$fname" ] && [ ! -e "$fname.1" ] && mv -- "$fname" "$dir/$fname"
+done

@@ -1,0 +1,21 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		loop -- loops <command> every <pause> seconds
+#	Usage: loop [- <pause>] <command>
+#
+# Создан 17-го Октября 2003 года в  8:04
+#
+if [ "$1" != "-" ]; then
+    Sl=2
+else
+    Sl=$2
+    shift
+    shift
+fi
+while true
+do
+    clear
+    eval "$*"
+    sleep $Sl
+done

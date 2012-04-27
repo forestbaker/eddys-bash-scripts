@@ -1,0 +1,8 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		tarit - tar -zcvf $1
+#
+# Создан 12-го Октябрь 2006 года в  8:30
+#
+tar -zcvf $1.tgz $1

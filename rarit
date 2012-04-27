@@ -1,0 +1,8 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		rarit -- рарит свои аргумент в архив
+#
+# Создан 19-го Февраль 2005 года в 16:57
+#
+rar a -r $1.rar $*

@@ -1,0 +1,8 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		dialin
+#
+# Создан 04-го Апрель 2004 года в 12:12
+#
+sudo /sbin/mgetty /dev/ttyS0 &

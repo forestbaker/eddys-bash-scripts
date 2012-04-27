@@ -1,0 +1,20 @@
+#!/bin/sh
+#	cdcopy - копирует CD
+#
+#echo `mkisofs -r -q -print-size $1`
+#dd if=/dev/cdrom | 
+IMA=/tmp/cd.iso
+df -m /
+echo -e "\t\tProceed?"
+read dummy
+ANS="y"
+while [ $ANS = "y" ]
+do
+    echo "Making image. please wait..."
+    dd if=/dev/cdrom of=$IMA
+    echo "Start recording..."
+    cdrecord -v -dao -eject $IMA
+    rm $IMA
+    echo -e "\n\t\tCopy next CD?"
+    read ANS
+done

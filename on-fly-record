@@ -1,0 +1,28 @@
+#!/bin/sh
+NOCHECK="FALSE"
+if [ "$1" = "-no" ]; then
+    NOCHECK="TRUE"
+    shift
+fi
+if [ "$#" -lt 2 ]; then
+    echo -e "Usage:\non-fly-record <CD-name> <What-to-record>"
+    exit 1
+fi
+Dev="dev=/dev/scd0"
+Device="/dev/sr0"
+Mode="-sao"
+if [ "$1" = "nec" ]; then
+    Dev="dev=/dev/scd1"
+    Device="/dev/sr1"
+    Mode=""
+    shift
+fi
+bufs=`mkisofs -r -q -print-size $2`
+mkisofs -V $1 -A $1 -r  $2 | cdrecord -v -ignsize -overburn $Mode -eject $Dev tsize="$bufs"s -
+
+#echo "Folder size:"
+#du -k $2|awk '{print $1}'
+echo "Checking"
+eject -t $Device
+[ "$NOCHECK" = "FALSE" ] && dd if=$Device of=/dev/null bs=1024
+eject $Device

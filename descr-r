@@ -1,0 +1,12 @@
+#!/bin/sh
+tmp="/tmp/tmp.$$"
+dive $1 > $tmp
+while read folder
+do
+    if [ ! `echo "$folder" | grep "[_\.]files"` ]; then
+        cd $folder
+	echo "$folder"
+	mkdescr
+    fi
+done<$tmp
+rm $tmp

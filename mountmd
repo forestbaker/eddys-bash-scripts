@@ -1,0 +1,9 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		mountmd - монтирует мастдаищный образ
+#
+# Создан 03-го Декабрь 2006 года в 11:17
+#
+#mkdir MUSTDIE_MNT-point
+su -c "mount -o loop,offset=32256 -t vfat -o uid=eddy,fmask=133,iocharset=koi8-r /home/eddy/md.img /home/eddy/MD"

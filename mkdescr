@@ -1,0 +1,28 @@
+#!/bin/sh
+# this script wrote by Eddy 23:05:46_12.07.03
+#script named mkdescr
+#
+#   Makes description files: cat ls > file
+#
+DESCR=descript.ion
+TMP=/tmp/tmp.$$
+[ -e "Descript.ion" ] && [ ! -e "descript.ion" ] && fardescr2mine
+#if [ -e "$DESCR" ]; then
+#    echo "Descript file is already exists. Remove? [y/n]"
+#    read ANS
+#    if [ "$ANS" != "Y" -a "$ANS" != "y" ]; then
+#	exit 0
+#    fi
+#    rm $DESCR
+#fi
+#touch $DESCR
+ls -1>$TMP
+while read FILE
+do
+#    EXT=`ext "$FILE"`
+#    D=`echo "$FILE"|sed "s/\.$EXT//g"` 
+    D=`echo "$FILE" | sed "s/\.[^\.]*$//"`
+    [ "$D" = "descript" ] && D="this file"
+    grep -q "$D:" "$DESCR" 2>/dev/null|| echo "$FILE:$D">>$DESCR
+done<$TMP
+rm $TMP

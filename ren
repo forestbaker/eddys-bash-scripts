@@ -1,0 +1,15 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		ren - renames a file
+#
+# Создан 23-го Сентября 2003 года в 17:04
+#
+# USE: ren <file1.ext> <file2>    to rename file1.ext into file2.ext
+#rename $1 $2 $1
+EXT=`ext "$1"`
+name=`echo "$1" | sed "s/\.$EXT//"`
+echo "$name"
+rename "$name" "$2" "$name.$EXT"
+rename "$name" "$2" "$name"_files
+rename "$name" "$2" "$name".files

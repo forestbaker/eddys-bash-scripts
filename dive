@@ -1,0 +1,42 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#                dive -- recourcively lists all directories in given
+#
+# Создан 23-го Сентября 2003 года в 19:01
+#
+lst=/tmp/dive.$$
+mode="" # by default returns folders only
+case "$1" in
+-a) mode="-a" #files and folders
+    shift
+    ;;
+-f) mode="-f" # only files
+    shift
+    ;;
+esac
+
+rt=`echo "$*" | sed "s/^\ \{1,\}//"`
+if [ ! -d "$rt" ]; then
+    if [ "$rt" = "" ]; then
+	rt="./"
+    else
+        echo "You should point a folder"
+	rm $lst
+	exit 1
+    fi
+fi
+cd "$rt"
+[ "$mode" != "-f" ] && echo "$PWD"
+ls -1 > "$lst"
+
+while read f
+do
+#    [ -d "$PWD/$f" ] && dive $f
+    if [ -d "$PWD/$f" ]; then dive "$mode" "$f"
+    else [ "$mode" != "" ] && echo "$PWD/$f" # "mode"=-a or -f
+    fi
+done<$lst
+
+cd ../
+rm $lst

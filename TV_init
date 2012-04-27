@@ -1,0 +1,10 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		TV_init
+#
+# Создан 01-го Май 2005 года в 10:36
+#
+
+modprobe saa7134 card=22
+modprobe tda9887 secam=d

@@ -1,0 +1,6 @@
+#!/bin/sh
+for file in `ls *.cpj`
+do
+    cat  $file | grep "Track[1-9]" | sed "s/Track[0-9]\{1,\}=CD-DA\ //" |sed "s/\/\ Helloween//" > tmp
+    mv tmp $file
+done

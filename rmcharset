@@ -1,0 +1,12 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		rmcharset
+#
+# Создан 13-го Апрель 2004 года в 21:55
+#
+for file in $*
+do
+    sed "s/<.*harset.*>//g" $file > tmp
+    mv tmp $file
+done

@@ -1,0 +1,32 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		convname -- substitutes spaces by underlines
+#			in given filenames (Warning! this perfectly
+#			works with files with extensions, but not
+#			with folders).
+#			If renames file, it substitutes also all its old
+#			filenames inside it.
+#
+# Создан 13-го Март 2004 года в 13:40
+#
+echo ""
+Temp=LS.allfiles
+ls -1 | sed "s/LS.allfiles//"|grep -v "^$" > $Temp
+
+while read File
+do
+    Name=`echo "$File"|sed "s/\ /_/g"`
+    if [ "$Name" != "$File" ]; then
+	mv "$File" $Name
+        echo -e "File       $File     converted                        \r\c"
+    fi
+    if [ -d "$Name" ]; then
+	echo -e "\n\nDIVING INTO\t $Name"
+	cd $Name
+	convname-r
+	cd ../
+    fi
+done < $Temp
+rm $Temp
+echo -e "\n\nDone!!!"

@@ -1,0 +1,8 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		mycdrecord
+#
+# Создан 17-го Август 2006 года в 18:20
+#
+cdrecord -v -sao  "$*" && dd if=/dev/dvdwriter of=/dev/null bs=1024 && eject /dev/dvdwriter

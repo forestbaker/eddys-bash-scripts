@@ -1,0 +1,77 @@
+#!/bin/sh
+#	2 минуты 12.38 секунд  на 12'989 файлов общим размером 10'026'786'125 байт
+#		(стало: 9'919'093'813 байт)
+#	1 минута 13.00 секунд на 10'399 файлов общим размером 27'171'656'169 байт
+#		(стало: 26'401'660'287 байт)
+#	1 минута 17.82 секунд на 8'686 файлов общим размером 11'474'216'791 байт
+#		(стало: 11'131'537'062 байт)
+#	3 минуты 19.77 секунд на 16'257 файлов общим размером 70'697'892'519 байт
+#		(стало: 69'132'667'051 байт)
+#
+FILELIST="filelist_4_mysql"
+SQLFILE="tmp_4_mysql"
+OUTP="double_files"
+
+STEP_CNTR=0
+#DUP_CNTR=0
+
+function Step(){
+	STEP_CNTR=$[$STEP_CNTR + 1 ]
+	echo -e "\n\e[1;32m$STEP_CNTR\t\t$*...\e[0m"
+}
+
+alias mysql='mysql --default-character-set=koi8r --batch -s files_db'
+rm -f $FILELIST $SQLFILE $OUTP
+
+Step "Making list of files"
+find  -type f -printf "%p\t%s\n" | iconv -f koi8-r -t utf8 > $FILELIST
+
+
+Step "Finding files with same size"
+cat > $SQLFILE << EOF
+delete from files;
+load data local infile "filelist_4_mysql" into table files(filename, filesize);
+delete from files where filesize in (select filesize from (select filesize,count(*) c from files group by filesize having c = 1) T);
+delete from files where filesize = 0;
+select filesize from files group by filesize;
+EOF
+
+mysql < $SQLFILE > $OUTP
+
+cat > $SQLFILE << EOF
+delete from dups;
+load data local infile "filelist_4_mysql" into table dups(filename, filemd5);
+delete from dups where filemd5 in (select filemd5 from (select filemd5,count(*) c from dups group by filemd5 having c = 1) T);
+select filename from dups group by filemd5;
+EOF
+
+Step "Finding duplicates"
+while read SIZE
+do
+	rm -f $FILELIST
+	echo "select filename from files where filesize = $SIZE ;" | mysql | while read FILE
+	do
+		MD=$(md5sum "$FILE" 2>/dev/null);
+		if [ "$MD" != "" ]; then
+			echo -e "$FILE\t$MD" | iconv -f koi8-r -t utf8 >> $FILELIST 
+		else
+			echo -e "\e[1;31;40mCant read MD5 of $FILE\e[0m\nTrace:"
+			echo "select filename from files where filesize = $SIZE;" | mysql
+		fi
+	done
+	mysql < $SQLFILE | while read FILE
+	do
+		echo -e "\n\e[1;41;33m$FILE\e[36m has dublicates:\e[0m"
+		echo "select filename from dups where filemd5 = (select filemd5 from dups where filename = \"$FILE\") AND filename != \"$FILE\";" | mysql  | while read D_FILE
+		do
+			echo -e "\e[1;32;40m$D_FILE\e[0m"
+			[ "$1" = "-d" ] && rm -f "$D_FILE" && echo "deleted"
+			[ "$1" = "-l" ] && ln -f "$FILE" "$D_FILE" && echo "linked"   #|| ln -fs "$FILE" "$D_FILE" || echo -e "\e[1;31;40merror linking $FILE to $D_FILE!!!\e[0m"
+		done
+	done
+done < $OUTP
+
+Step "Deleting trash"
+echo "delete from files; delete from dups;" | mysql
+rm -f $FILELIST $SQLFILE $OUTP
+#echo -e "\n\e[1;31;40mTotal: $DUP_CNTR files have dublicates.\e[0m\n"

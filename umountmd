@@ -1,0 +1,9 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		umountmd
+#
+# Создан 03-го Декабрь 2006 года в 11:19
+#
+sudo umount MUSTDIE_MNT-point
+rmdir MUSTDIE_MNT-point

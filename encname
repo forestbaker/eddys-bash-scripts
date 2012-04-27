@@ -1,0 +1,8 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		encname
+#
+# Создан 21-го Август 2009 года в 14:38
+#
+echo $* | enconv

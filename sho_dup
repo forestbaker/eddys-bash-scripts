@@ -1,0 +1,18 @@
+#!/bin/sh
+name=tmp.$$
+ls -lSa $1 | awk '{print $5,$9}' > $name
+read size1 file1 < $name
+while read size file
+do 
+    [ ! -f "$file" ] && continue
+    if [ "$size1" = "$size" ]; then
+	h1=`head $file1`
+	h2=`head $file`
+	if [ "$h1" = "$h2" ]; then
+	    echo "$file1  AND  $file : $size"
+	fi
+    fi
+    size1=$size
+    file1=$file
+done < $name
+rm $name

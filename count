@@ -1,0 +1,18 @@
+#!/bin/sh
+#
+#	count -- just counts all files and folders in given, or in current folder (default)
+#
+
+countf=0
+countd=0
+countx=0
+[ "$1" != "" ] && dir="$1/"
+echo "count files in $PWD/$1:"
+for file in `ls -A $1`
+do
+    [ -f "$dir$file" ] && countf=`expr $countf + 1`
+    [ -d "$dir$file" ] && countd=`expr $countd + 1`    
+    [ -x "$dir$file" -a ! -d "$dir$file" ] && countx=`expr $countx + 1`        
+    echo -e "$countd:folders, $countf:files, $countx:executes\r\c"
+done
+    echo -e "\nTotal: `expr $countf + $countd + $countx` files and folders"

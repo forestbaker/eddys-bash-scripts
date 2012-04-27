@@ -1,0 +1,27 @@
+#!/bin/sh
+#
+#	count -- just counts all files and folders in given, or in current folder (default)
+#
+FLAG=""
+if [ "$1" = "-1" ]; then
+    FLAG="1"
+    shift
+fi
+countf=0
+cdr=0
+[ "$1" != "" ] && dir="$1/"
+for file in `ls -A $1`
+do
+    [ -f "$dir$file" ] && countf=`expr $countf + 1`
+    if [ -d "$dir$file" ]; then
+        [ "$FLAG" = "" ] && echo -e "---> $file\r\t\t\t\t\t\t\c"	
+	cdr=`count-r -1 $dir$file`
+	countf=`expr $countf + $cdr`
+    fi
+    [ "$FLAG" = "" -a "$cdr" != "0" ] && echo -e "($cdr)\t\t$countf"
+done
+if [ "$FLAG" = "" ]; then
+    echo -e "\nTotal: $countf\n	"
+else
+    echo "$countf"
+fi

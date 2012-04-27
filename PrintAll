@@ -1,0 +1,2 @@
+#!/bin/sh
+scrot '/tmp/%Y.%m.%d-%H:%M.png'

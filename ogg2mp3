@@ -1,0 +1,48 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		mp32ogg - encodes mp3 files into ogg with min bitrate 192k
+#
+# Создан 06-го Март 2006 года в 21:58
+#
+#if [ -e /dev/shm/MPEG.wav -o -e /dev/shm/1.ogg ]; then
+#    echo "Another process is alredy running"
+#    exit
+#else
+WAV=MP32OGG$$.wav
+MP3=MP32OGG$$.mp3
+for FILE in $*
+do
+if [ "`ext $FILE`" == "ogg" ]; then
+echo "uncompressing $FILE"
+NAME=`echo $FILE|sed "s/\.ogg//"`
+cp $FILE /dev/shm/$FILE
+ogg123 -d wav -f /dev/shm/$WAV /dev/shm/$FILE
+ogginfo /dev/shm/$FILE > tmp 2>&1
+rm /dev/shm/$FILE
+#unix2dos tmp >/dev/null 2>&1
+#encode CP1251 tmp 2>&1 #recode
+Title=`cat tmp|sed -n '/TITLE/p'|sed -e "s/.*TITLE=//" -e "s/'/\\\\\'/g"`
+[ "$Title" != "" ] && Title="--tt \"$Title\""
+Artist=`cat tmp|sed -n '/ARTIST/p'|sed -e "s/.*ARTIST=//" -e "s/'/\\\\\'/g"`
+[ "$Artist" != "" ] && Artist="--ta \"$Artist\""
+Album=`cat tmp|sed -n '/ALBUM/p'|sed -e "s/.*ALBUM=//" -e "s/'/\\\\\'/g"`
+[ "$Album" != "" ] && Album="--tl \"$Album\""
+Year=`cat tmp|sed -n '/DATE/p'|sed "s/.*DATE=//"`
+[ "$Year" != "" ] && Year="--ty $Year"
+#Brate=`cat tmp|grep "kbit"|sed "s/\(MPEG 1.0 layer III, \)\(.*\)\( kbit.*\)/\2/"`
+#Brate=`cat tmp|grep "kbit"|sed -e "s/\(.*\)\([0-9]\{3\} kbit\)\(.*\)/\2/" -e "s/\([0-9]\{3\}\)\(.*\)/\1/"`
+NUM=`cat tmp|sed -n '/TRACKNUMBER/p'|sed "s/.*TRACKNUMBER=//"`
+[ "$NUM" != "" ] && NUM="--tn $NUM"
+echo "Encoding $NAME"
+echo "Num:$NUM  Title:$Title Alb:$Album Y:$Year Arti:$Artist " 
+#lame --abr 192 $Title $Artist $Album $Year  $NUM /dev/shm/$WAV /dev/shm/$MP3
+lame --abr 192 /dev/shm/$WAV /dev/shm/$MP3
+#oggenc -b "$Brate" /dev/shm/$WAV $Num -G "$Genre" -t "$Title" -l "$Album" -d "$Year" -a "$Artist" -o /dev/shm/$OGG >/dev/null
+rm /dev/shm/$WAV
+mv /dev/shm/$MP3 "$NAME.mp3"
+rm tmp
+[ -e "$NAME.mp3" ] && rm $FILE
+fi
+done
+#fi
