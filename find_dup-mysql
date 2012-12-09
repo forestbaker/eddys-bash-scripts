@@ -1,0 +1,91 @@
+#!/bin/sh
+#	2 минуты 12.38 секунд  на 12'989 файлов общим размером 10'026'786'125 байт
+#		(стало: 9'919'093'813 байт)
+#	1 минута 13.00 секунд на 10'399 файлов общим размером 27'171'656'169 байт
+#		(стало: 26'401'660'287 байт)
+#	1 минута 17.82 секунд на 8'686 файлов общим размером 11'474'216'791 байт
+#		(стало: 11'131'537'062 байт)
+#	3 минуты 19.77 секунд на 16'257 файлов общим размером 70'697'892'519 байт
+#		(стало: 69'132'667'051 байт)
+#
+FILELIST="/tmp/filelist_4_mysql"
+SQLFILE="/tmp/tmp_4_mysql"
+OUTP="/tmp/double_files"
+DB="/tmp/filelistdb"
+
+STEP_CNTR=0
+#DUP_CNTR=0
+
+function SQL(){
+	echo -e $* | sqlite3 $DB
+}
+
+function SQLF(){
+	sqlite3 $DB < $SQLFILE
+}
+
+
+function Step(){
+	STEP_CNTR=$[$STEP_CNTR + 1 ]
+	echo -e "\n\e[1;32m$STEP_CNTR\t\t$*...\e[0m"
+}
+
+rm -f $FILELIST $SQLFILE $OUTP $DB
+
+Step "Init database"
+SQL "create table files(filename string, filesize integer); create table dups(filename string, filemd5 long);"
+
+Step "Making list of files"
+find  -type f -printf "%p\t%s\n" > $FILELIST
+
+Step "Finding files with same size"
+cat > $SQLFILE << EOF
+delete from files;
+.mode tabs
+.import /tmp/filelist_4_mysql files
+delete from files where filesize in (select filesize from (select filesize,count(*) c from files group by filesize having c = 1) T);
+delete from files where filesize = 0;
+select filesize from files group by filesize;
+EOF
+
+SQLF > $OUTP
+
+cat > $SQLFILE << EOF
+delete from dups;
+.mode tabs
+.import /tmp/filelist_4_mysql dups
+delete from dups where filemd5 in (select filemd5 from (select filemd5,count(*) c from dups group by filemd5 having c = 1) T);
+select filename from dups group by filemd5;
+EOF
+
+Step "Finding duplicates"
+while read SIZE
+do
+	rm -f $FILELIST
+	SQL "select filename from files where filesize = $SIZE ;" | while read FILE
+	do
+		MD=$(sha1sum -b "$FILE" | awk '{print $1}' 2>/dev/null);
+		if [ "$MD" != "" ]; then
+			echo -e "$FILE\t$MD" >> $FILELIST
+		else
+			echo -e "\e[1;31;40mCant read MD5 of $FILE\e[0m\nTrace:"
+			SQL "select filename from files where filesize = $SIZE;" 
+		fi
+	done
+	SQLF | while read FILE
+	do
+		echo -e "\n\e[1;41;33m$FILE\e[36m has dublicates:\e[0m"
+		SQL "select filename from dups where filemd5 = (select filemd5 from dups where filename = \"$FILE\") AND filename != \"$FILE\";"  | while read D_FILE
+		do
+			echo -e "\e[1;32;40m$D_FILE\e[0m"
+			[ "$1" = "-d" ] && rm -f "$D_FILE" && echo "deleted"
+			[ "$1" = "-l" ] && ln -f "$FILE" "$D_FILE" && echo "linked"   #|| ln -fs "$FILE" "$D_FILE" || echo -e "\e[1;31;40merror linking $FILE to $D_FILE!!!\e[0m"
+		done
+	done
+done < $OUTP
+
+Step "Deleting trash"
+#echo "delete from files; delete from dups;" 
+rm -f $FILELIST $SQLFILE $OUTP $DB
+
+#echo -e "\n\e[1;31;40mTotal: $DUP_CNTR files have dublicates.\e[0m\n"

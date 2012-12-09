@@ -7,9 +7,9 @@ fi
 [ "$2" != "" ] && output="$2" || output=$(date +%y.%m.%d_%H:%M:%S.png)
 tex="$prefix.tex"
 cat > $tex << EOF
-\documentclass[12pt]{article}
-%\usepackage{/home/eddy/ed}
+\documentclass[12pt]{minimal}
 \usepackage[koi8-r]{inputenc}	% Классическая кодировка
+\usepackage{/home/eddy/ed}
 \usepackage[english,russian]{babel}	% Правила переноса слов
 \usepackage[intlimits]{amsmath}	% Мат. команды
 \usepackage{amsfonts}		% Шрифты
@@ -26,8 +26,8 @@ cat >> $tex << EOF
 \textwidth=\wd0
 \oddsidemargin=-1cm
 \topmargin=-1.5cm
-\advance\textheight by 2\dp0
-\advance\textwidth by 2em
+\advance\textheight by 1cm
+\advance\textwidth by 1cm
 \begin{document}
 \vbox{\vss\hbox{\hss\copy0\hss}\vss}
 \end{document}
