@@ -1,0 +1,7 @@
+#!/bin/bash
+function mkword(){
+   echo -n "$1"|sed 's/\([[:alpha:]]\)/\1\n/g'|sort| tr "\n" "."
+}
+word1=$(mkword $1)
+word2=$(mkword $2)
+[ "$word1" = "$word2" ] && echo "анаграмма" || echo "не анаграмма"

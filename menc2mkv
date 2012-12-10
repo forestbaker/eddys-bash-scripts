@@ -1,0 +1,13 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		menc2mkv
+#
+# Создан 10-го Октябрь 2012 года в 20:29
+#
+if [ $# != 1 ];
+then
+	echo -e "\nUsage: $0 file\n\tencodes file into matroska format"
+else
+	mencoder $1 -o ${1}.mkv -ovc x264 -oac  mp3lame -lameopts br=192 -of lavf -lavfopts format=matroska -nosub -x264encopts nocabac:crf=30:threads=4
+fi

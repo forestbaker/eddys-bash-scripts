@@ -1,0 +1,37 @@
+#!/bin/sh
+if [ "$1" = "" ]; then
+    echo "usage: $0 <latex string without \$s>"
+    exit
+fi
+[ "$2" != "" ] && pngname="$2" || pngname="out.png"
+mask=tmp_$$
+texfile=${mask}.tex
+cat > $texfile << EOF
+\documentclass[12pt]{article}
+\usepackage[english, russian]{babel}
+\usepackage[koi8-r]{inputenc}
+\usepackage[matrix,arrow,curve]{xy}
+\usepackage[intlimits]{amsmath}
+\usepackage{amsfonts}
+\pagestyle{empty}
+\setbox0=\hbox{$\displaystyle
+EOF
+
+echo "$1" >> $texfile
+
+cat >> $texfile << EOF
+$}
+\textwidth=\wd0
+\textheight=\ht0
+\advance\textwidth by 2em
+\advance\textheight by 2\dp0
+\topmargin=-1.5cm
+\oddsidemargin=-1cm
+\begin{document}
+\vbox{\vss\hbox{\hss\copy0\hss}\vss}
+\end{document}
+EOF
+
+latex $texfile
+dvipng -D 600 ${mask}.dvi -o $pngname
+rm -f ${mask}*
