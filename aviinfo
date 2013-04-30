@@ -1,0 +1,1 @@
+mplayer -frames 0 -vo null /home/eddy/Matlab/toolbox/vipblks/vipdemos/scenevideoclip.avi

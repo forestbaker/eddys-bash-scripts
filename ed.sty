@@ -1,0 +1,25 @@
+\usepackage[koi8-r]{inputenc}
+\usepackage[russian]{babel}
+	\usepackage[pdftex]{graphicx}
+\DeclareGraphicsRule{.ps}{pdf}{}{ps2pdf #1}
+\batchmode
+\textwidth=19cm
+\oddsidemargin=-1cm
+\evensidemargin=-1cm
+\topmargin=-4cm
+\textheight=32cm
+\hoffset=-1.5cm
+
+\usepackage[print,largetypeblock]{booklet} \nofiles
+\pagespersignature{32}
+%\ifpdf
+    \pdfoutput = 1
+    \setpdftargetpages
+%\else
+%    \checkforlandscape
+%    \ifuselandscape
+%	\special{landscape}
+%    \fi
+%\fi
+\special{!TeXDict begin <</Tumble true>> setpagedevice end}
+%\target{magstep0}{21cm}{31cm}

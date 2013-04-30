@@ -9,7 +9,7 @@ tex="$prefix.tex"
 cat > $tex << EOF
 \documentclass[12pt]{minimal}
 \usepackage[koi8-r]{inputenc}	% Классическая кодировка
-\usepackage{/home/eddy/ed}
+%\usepackage{/home/eddy/ed}
 \usepackage[english,russian]{babel}	% Правила переноса слов
 \usepackage[intlimits]{amsmath}	% Мат. команды
 \usepackage{amsfonts}		% Шрифты

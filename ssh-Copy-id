@@ -1,0 +1,9 @@
+#!/usr/bin/ssh-agent /bin/bash
+# this script has been written by Eddy 
+#
+#		ssh-Copy-id
+#
+# Создан 07-го Февраль 2013 года в 16:58
+#
+ssh-add
+ssh-copy-id $1

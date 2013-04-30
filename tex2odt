@@ -1,0 +1,11 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		tex2odt - converts tex file into odt
+#
+# Создан 23-го Апрель 2013 года в  9:28
+#
+
+latex $1
+tex4ht $1
+mk4ht oolatex $1

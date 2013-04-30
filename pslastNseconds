@@ -1,0 +1,14 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		pslastNseconds - shows processes that have been started last N seconds
+#
+# Создан 16-го Январь 2013 года в 12:00
+#
+if [ $# -ne 1 ]; then
+	echo -e "\nUSAGE: $0 time_in_seconds\n\t\twill show processes that have been started last N seconds\n"
+	return
+fi
+ps k-etime h -eo etimes,command | while read etime comm; do
+	[ $etime -lt $1 ] && echo -e "$etime\t$comm"
+done

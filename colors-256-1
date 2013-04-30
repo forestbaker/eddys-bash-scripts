@@ -1,0 +1,24 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		colors-256 - 256-цветная версия скрипта colors
+#
+#
+TERM="xterm-256color"
+COLRS="$(seq 1 32 256)"
+
+for A in 1 2 4 5 7 9
+	do
+	echo -en "\033[0m\n Свойство $A:"
+	for B in $COLRS
+		do
+		echo -e  "\nЦвет $B\c"
+		for C in $COLRS
+			do
+				echo -e "\033[$A;38;05;$B;48;05;$C""m Фон $C\t\c"
+			done
+		echo -e "\033[0m\c"
+		done
+	done
+echo -e "\033[0m\n\n"
+

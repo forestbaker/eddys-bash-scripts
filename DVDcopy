@@ -1,0 +1,108 @@
+  PID TTY      STAT   TIME COMMAND
+    1 ?        Ss     0:00 init [5]                                                                               
+    2 ?        SN     0:00 [ksoftirqd/0]
+    3 ?        S      0:00 [watchdog/0]
+    4 ?        S<     0:00 [events/0]
+    5 ?        S<     0:00 [khelper]
+    6 ?        S<     0:00 [kthread]
+    8 ?        S<     0:00 [kblockd/0]
+    9 ?        S<     0:00 [kacpid]
+   70 ?        S<     0:00 [khubd]
+   72 ?        S<     0:00 [kseriod]
+  152 ?        S      0:00 [pdflush]
+  153 ?        S      0:00 [pdflush]
+  154 ?        S      0:00 [kswapd0]
+  155 ?        S<     0:00 [aio/0]
+  311 ?        S<     0:00 [kpsmoused]
+  325 ?        S<     0:00 [ata/0]
+  329 ?        S<     0:00 [scsi_eh_0]
+  330 ?        S<     0:00 [scsi_eh_1]
+  346 ?        S<     0:00 [reiserfs/0]
+  452 ?        S<s    0:00 udevd -d
+  759 ?        Ss     0:00 kmodule -d
+  882 ?        S<     0:00 [kgameportd]
+  945 ?        S<     0:00 [kauditd]
+ 1038 ?        S<     0:00 [scsi_eh_2]
+ 1039 ?        S<     0:00 [usb-storage]
+ 2218 ?        Ss     0:00 syslogd -m 0
+ 2220 ?        Ss     0:00 klogd -x
+ 2318 ?        Ss     0:00 /usr/sbin/acpid
+ 2331 ?        Ss     0:00 cupsd
+ 2340 ?        Ss     0:00 xinetd -stayalive -pidfile /var/run/xinetd.pid
+ 2348 ?        Ss     0:00 gpm -m /dev/input/mice -t imps2
+ 2357 ?        Ss     0:00 /usr/sbin/httpd
+ 2358 ?        S      0:00 /usr/sbin/httpd
+ 2366 ?        S      0:00 /usr/sbin/httpd
+ 2367 ?        S      0:00 /usr/sbin/httpd
+ 2368 ?        S      0:00 /usr/sbin/httpd
+ 2369 ?        S      0:00 /usr/sbin/httpd
+ 2370 ?        S      0:00 /usr/sbin/httpd
+ 2371 ?        S      0:00 /usr/sbin/httpd
+ 2372 ?        S      0:00 /usr/sbin/httpd
+ 2373 ?        Ss     0:00 crond
+ 2399 ?        Ss     0:00 xfs -droppriv -daemon
+ 2738 ?        S      0:00 su eddy -c umask 022; /var/tmp/lm_TMW.ld -z  -c /var/tmp/lm_TMW.dat | sh -c 'while read line; do echo "$line" >> /var/tmp/lm_TMW.log; done'
+ 2739 ?        S      0:00 bash -c umask 022; /var/tmp/lm_TMW.ld -z  -c /var/tmp/lm_TMW.dat | sh -c 'while read line; do echo "$line" >> /var/tmp/lm_TMW.log; done'
+ 2740 ?        S      0:00 /var/tmp/lm_TMW.ld -z -c /var/tmp/lm_TMW.dat
+ 2741 ?        S      0:00 sh -c while read line; do echo "$line" >> /var/tmp/lm_TMW.log; done
+ 2743 ?        Ss     0:00 MLM -T eddy.com 10.8 3 -c /var/tmp/lm_TMW.dat --lmgrd_start 47e5f46c
+ 2750 ?        Ss     0:00 smbd -D
+ 2752 ?        S      0:00 smbd -D
+ 2753 ?        Ss     0:00 nmbd -D
+ 2761 ?        SNs    0:00 anacron -s
+ 2769 ?        Ss     0:00 /usr/sbin/atd
+ 2850 ?        Ss     0:00 /usr/bin/perl /usr/libexec/webmin/miniserv.pl /etc/webmin/miniserv.conf
+ 2854 tty1     Ss+    0:00 /sbin/mingetty tty1
+ 2855 tty2     Ss+    0:00 /sbin/mingetty tty2
+ 2856 tty3     Ss+    0:00 /sbin/mingetty tty3
+ 2857 tty4     Ss+    0:00 /sbin/mingetty tty4
+ 2858 tty5     Ss+    0:00 /sbin/mingetty tty5
+ 2859 tty6     Ss+    0:00 /sbin/mingetty tty6
+ 2860 ?        Ss     0:00 /bin/sh /etc/X11/prefdm -nodaemon
+ 2977 ?        S      0:00 kdm -nodaemon
+ 3077 tty7     SLs+   0:09 /usr/X11R6/bin/X -br -nolisten tcp :0 vt7 -auth /var/run/xauth/A:0-v0R7dE
+ 3078 ?        S      0:00 -:0          
+ 3125 ?        Ss     0:00 /bin/sh /usr/bin/startkde
+ 3171 ?        Ss     0:00 /usr/bin/ssh-agent /usr/bin/dbus-launch --exit-with-session startkde
+ 3174 ?        S      0:00 /usr/bin/dbus-launch --exit-with-session startkde
+ 3175 ?        Ss     0:00 dbus-daemon --fork --print-pid 8 --print-address 6 --session
+ 3243 ?        Ss     0:00 kdeinit Running...                    
+ 3246 ?        S      0:00 dcopserver [kdeinit] --nosid          
+ 3248 ?        S      0:00 klauncher [kdeinit] --new-startup     
+ 3250 ?        S      0:00 kded [kdeinit] --new-startup          
+ 3252 ?        S      0:00 /usr/libexec/gam_server
+ 3257 ?        S      0:00 kwrapper ksmserver
+ 3259 ?        S      0:00 ksmserver [kdeinit]                   
+ 3260 ?        S      0:00 kwin [kdeinit] -session 117f000001000107782215400000052120000_1205921512_81554
+ 3262 ?        S      0:04 kdesktop [kdeinit]                    
+ 3264 ?        S      0:03 kicker [kdeinit]                      
+ 3277 ?        S      0:06 /usr/bin/artsd -F 17 -S 4096 -a alsa -d -b 16 -m artsmessage -c drkonqi -l 3 -f
+ 3282 ?        S      0:00 kaccess [kdeinit]                     
+ 3285 ?        S      0:00 kmix [kdeinit] -session 117f000002000110122895500000022940016_1205921511_949204
+ 3286 ?        S      0:00 konsole [kdeinit] -session 1093c7d3e6000114966132400000041940007_1205921511_949507
+ 3287 ?        S      0:00 konsole [kdeinit] -session 1093c7d3e6000111432078600000030770007_1205921511_949771
+ 3288 ?        S      0:00 konsole [kdeinit] -session 1093c7d3e6000113950424900000040860011_1205921511_957670
+ 3289 ?        S      0:00 konsole [kdeinit] -session 1093c7d3e6000116140786500000029630008_1205921511_950214
+ 3290 ?        S      0:00 networkstatustestservice -session 1093c7d3e6000115815488700000055190008_1205921511_950495
+ 3292 ?        S      0:00 ksensors -session 1093c7d3e6000115980175900000028800011_1205921511_950735
+ 3293 ?        Sl     0:01 xmms --sm-client-id 1093c7d3e6000119328202000000028530007
+ 3296 pts/0    Ss+    0:00 /bin/bash
+ 3298 pts/1    Ss+    0:00 /bin/bash
+ 3299 pts/2    Ss     0:00 /bin/bash
+ 3301 pts/3    Ss+    0:00 /bin/bash
+ 3306 ?        S      0:00 stardict --sm-config-prefix /stardict-CXNo6h/ --sm-client-id 1093c7d3e6000120565856800000032590022 --screen 0 -h null
+ 3375 ?        S      0:00 kalarmd --autostart
+ 3378 ?        S      0:00 knotes -session 1093c7d3e6000120583349300000032590009_1205921511_956470
+ 3380 ?        S      0:00 knotify [kdeinit]                     
+ 3382 ?        S      0:00 korgac --miniicon korganizer
+ 3384 ?        S      0:00 /usr/libexec/gconfd-2 12
+ 3386 ?        Ss     0:00 /usr/libexec/bonobo-activation-server --ac-activate --ior-output-fd=16
+ 3437 ?        Sl     0:03 k3b
+ 3438 ?        Sl     0:00 rccexternal
+ 3478 ?        S      0:00 kio_file [kdeinit] file /home/eddy/.kde/socket-eddy.com/klauncherp9AIOa.slave-socket /home/eddy/.kde/socket-eddy.com/k3bn1oS5a.slave-socket
+ 3479 ?        S      0:00 kio_file [kdeinit] file /home/eddy/.kde/socket-eddy.com/klauncherp9AIOa.slave-socket /home/eddy/.kde/socket-eddy.com/k3bFq1ttc.slave-socket
+ 3482 ?        R      0:00 /usr/bin/growisofs -Z /dev/hdc /dev/fd/0 -use-the-force-luke=notray -use-the-force-luke=tty -use-the-force-luke=tracksize:2198736 -dvd-compat -speed=16 -overburn
+ 3486 ?        S      0:00 /usr/bin/growisofs -Z /dev/hdc /dev/fd/0 -use-the-force-luke=notray -use-the-force-luke=tty -use-the-force-luke=tracksize:2198736 -dvd-compat -speed=16 -overburn
+ 3490 pts/2    S+     0:00 /usr/bin/mc -P /tmp/mc-eddy/mc.pwd.3299
+ 3492 pts/4    Ss     0:00 bash -rcfile .bashrc
+ 3515 pts/4    R+     0:00 ps -ax
