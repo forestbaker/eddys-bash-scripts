@@ -1,0 +1,29 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		recognize_pdf - распознает картинки при помощи cuneiform, выхлоп отправляет в файл outp.txt
+# зависит от cuneiform 
+#
+# Создан 25-го Апрель 2012 года в 18:12
+#
+
+if [ $# == 0 ]; then
+	echo -e "\nUsage: $(basename $0) files,\n\tsaves results to file filename.txt\n"
+	exit -1
+fi
+
+rm -f outp.txt
+
+# 1. Распознаем каждый рисунок
+echo -e "\nRecognize every file\n"
+for file in $*
+do
+	[ ! -f $file ] && continue
+	echo -n "$file ... "
+	base=$(bsnm $file)
+	cuneiform -l ruseng -f smarttext $file -o ${base}.txt
+	cat ${base}.txt >> outp.txt
+	echo "done!"
+done
+
+echo "Done!"

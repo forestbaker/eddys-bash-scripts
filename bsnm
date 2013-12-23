@@ -5,5 +5,12 @@
 #
 # Создан 20-го Февраль 2007 года в  0:00
 #
-EXT=`ext $1`
-echo $1|sed "s/\.$EXT//"
+EXT=""
+if [ -f "$1" ]; then
+    EXT=`echo $1|sed 's/.\{1,\}\.//g'`
+fi
+if [ "$EXT" != "$1" -a "$EXT" != "" ]; then
+    echo $1|sed "s/.$EXT//"
+else
+	echo $1
+fi

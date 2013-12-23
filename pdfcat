@@ -1,0 +1,11 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		pdfcat - concatenates all *pdf in current directory into $1.pdf
+#
+# Создан 11-го Декабрь 2013 года в 13:09
+#
+
+#convert -page a4 *.pdf ${1}.pdf
+pdfmerge *.pdf ${1}.pdf
+

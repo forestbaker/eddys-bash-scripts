@@ -8,5 +8,5 @@
 for file in $*
     do
 	name=`tolower $file`
-	mv $file $name
+	[ $file != $name ] && mv $file $name
     done

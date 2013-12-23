@@ -16,6 +16,7 @@ cat > $tex << EOF
 \usepackage{amssymb}		% Спец. символы
 \usepackage{wasysym}		% Для астрономических символов типа знаков зодиака
 \pagestyle{empty}
+\begin{document}
 \parindent=0pt
 \setbox0=\hbox{
 EOF
@@ -28,10 +29,9 @@ cat >> $tex << EOF
 \topmargin=-1.5cm
 \advance\textheight by 1cm
 \advance\textwidth by 1cm
-\begin{document}
 \vbox{\vss\hbox{\hss\copy0\hss}\vss}
 \end{document}
 EOF
 latex $tex
-dvipng -D 600 $prefix.dvi -o $output
+dvipng -bg transparent -D 600 $prefix.dvi -o $output
 rm -f $prefix*
