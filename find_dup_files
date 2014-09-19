@@ -8,39 +8,60 @@
 #	3 минуты 19.77 секунд на 16'257 файлов общим размером 70'697'892'519 байт
 #		(стало: 69'132'667'051 байт)
 #
-FILELIST="filelist_4_mysql"
-SQLFILE="tmp_4_mysql"
-OUTP="double_files"
+FILELIST="/tmp/filelist_4_mysql"
+SQLFILE="/tmp/tmp_4_mysql"
+OUTP="/tmp/double_files"
+DB="/tmp/filelistdb"
 
 STEP_CNTR=0
 #DUP_CNTR=0
+
+if [ "$1" = "-h" ]; then
+	echo "Usage: $(basename $0) [-h|-d|-l]"
+	echo -e "\t-h\tshow this help"
+	echo -e "\t-l\tmake hardlinks for duplicates"
+	echo -e "\t-d\tdelete duplicates"
+	exit 1
+fi
+
+function SQL(){
+	echo -e $* | sqlite3 $DB
+}
+
+function SQLF(){
+	sqlite3 $DB < $SQLFILE
+}
+
 
 function Step(){
 	STEP_CNTR=$[$STEP_CNTR + 1 ]
 	echo -e "\n\e[1;32m$STEP_CNTR\t\t$*...\e[0m"
 }
 
-alias mysql='mysql --default-character-set=koi8r --batch -s files_db'
-rm -f $FILELIST $SQLFILE $OUTP
+rm -f $FILELIST $SQLFILE $OUTP $DB
+
+Step "Init database"
+SQL "create table files(filename string, filesize integer); create table dups(filename string, filemd5 long);"
 
 Step "Making list of files"
-find  -type f -printf "%p\t%s\n" | iconv -f koi8-r -t utf8 > $FILELIST
-
+find  -type f -printf "%p\t%s\n" > $FILELIST
 
 Step "Finding files with same size"
 cat > $SQLFILE << EOF
 delete from files;
-load data local infile "filelist_4_mysql" into table files(filename, filesize);
+.mode tabs
+.import /tmp/filelist_4_mysql files
 delete from files where filesize in (select filesize from (select filesize,count(*) c from files group by filesize having c = 1) T);
 delete from files where filesize = 0;
 select filesize from files group by filesize;
 EOF
 
-mysql < $SQLFILE > $OUTP
+SQLF > $OUTP
 
 cat > $SQLFILE << EOF
 delete from dups;
-load data local infile "filelist_4_mysql" into table dups(filename, filemd5);
+.mode tabs
+.import /tmp/filelist_4_mysql dups
 delete from dups where filemd5 in (select filemd5 from (select filemd5,count(*) c from dups group by filemd5 having c = 1) T);
 select filename from dups group by filemd5;
 EOF
@@ -49,20 +70,20 @@ Step "Finding duplicates"
 while read SIZE
 do
 	rm -f $FILELIST
-	echo "select filename from files where filesize = $SIZE ;" | mysql | while read FILE
+	SQL "select filename from files where filesize = $SIZE ;" | while read FILE
 	do
-		MD=$(md5sum "$FILE" 2>/dev/null);
+		MD=$(sha1sum -b "$FILE" | awk '{print $1}' 2>/dev/null);
 		if [ "$MD" != "" ]; then
-			echo -e "$FILE\t$MD" | iconv -f koi8-r -t utf8 >> $FILELIST 
+			echo -e "$FILE\t$MD" >> $FILELIST
 		else
 			echo -e "\e[1;31;40mCant read MD5 of $FILE\e[0m\nTrace:"
-			echo "select filename from files where filesize = $SIZE;" | mysql
+			SQL "select filename from files where filesize = $SIZE;" 
 		fi
 	done
-	mysql < $SQLFILE | while read FILE
+	SQLF | while read FILE
 	do
 		echo -e "\n\e[1;41;33m$FILE\e[36m has dublicates:\e[0m"
-		echo "select filename from dups where filemd5 = (select filemd5 from dups where filename = \"$FILE\") AND filename != \"$FILE\";" | mysql  | while read D_FILE
+		SQL "select filename from dups where filemd5 = (select filemd5 from dups where filename = \"$FILE\") AND filename != \"$FILE\";"  | while read D_FILE
 		do
 			echo -e "\e[1;32;40m$D_FILE\e[0m"
 			[ "$1" = "-d" ] && rm -f "$D_FILE" && echo "deleted"
@@ -72,6 +93,7 @@ do
 done < $OUTP
 
 Step "Deleting trash"
-echo "delete from files; delete from dups;" | mysql
-rm -f $FILELIST $SQLFILE $OUTP
+#echo "delete from files; delete from dups;" 
+rm -f $FILELIST $SQLFILE $OUTP $DB
+
 #echo -e "\n\e[1;31;40mTotal: $DUP_CNTR files have dublicates.\e[0m\n"

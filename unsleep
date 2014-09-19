@@ -1,0 +1,15 @@
+#!/bin/sh
+# this script has been written by Eddy 
+#
+#		unsleep - run this script when watching a movie in fuckochrome
+#
+# Создан 04-го Апрель 2013 года в 22:25
+#
+
+A=1
+while true; do
+	xdotool mousemove_relative -- $A $A
+	xscreensaver-command -deactivate
+	A=$[-A]
+	sleep 30
+done
